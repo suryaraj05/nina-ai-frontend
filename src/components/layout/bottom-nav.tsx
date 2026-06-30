@@ -16,6 +16,7 @@ const ITEMS: { id: NavId; href: string; icon: typeof Home; label: string }[] = [
 function activeId(pathname: string): NavId {
   if (pathname.startsWith("/dashboard/keys")) return "keys";
   if (pathname.startsWith("/dashboard/settings")) return "settings";
+  if (pathname.startsWith("/dashboard/activity")) return "home";
   if (pathname.startsWith("/dashboard/contract")) return "home";
   return "home";
 }

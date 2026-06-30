@@ -11,6 +11,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
+import { ActivityOverview } from "@/components/dashboard/activity-overview";
 import { DashboardLogin } from "@/components/dashboard/dashboard-login";
 import { useDashboard } from "@/components/dashboard/dashboard-provider";
 import { StatusChip } from "@/components/ui/status-chip";
@@ -205,14 +206,7 @@ export function DashboardHome() {
       <div className="space-y-4">
         <StatusChip variant="plan">{site.plan ?? "free"}</StatusChip>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
-          <div className="flex items-start justify-between">
-            <p className="text-sm font-medium text-muted-foreground">Live analytics</p>
-            <StatusChip variant="live">Live</StatusChip>
-          </div>
-          <p className="mt-2 text-3xl font-bold tabular-nums">{formatCalls(calls)}</p>
-          <p className="text-sm text-muted-foreground">Conversations</p>
-        </div>
+        <ActivityOverview showLink />
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
           <div className="flex items-start justify-between">

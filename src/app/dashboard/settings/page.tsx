@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusChip } from "@/components/ui/status-chip";
 import { Textarea } from "@/components/ui/textarea";
+import { LlmConfigForm } from "@/components/dashboard/llm-config-form";
 import { getErrorMessage, ninaFetch } from "@/lib/api-client";
 
 export default function SettingsPage() {
@@ -41,7 +42,6 @@ export default function SettingsPage() {
     );
   }
 
-  const hasLlm = Boolean(site.llmConfig);
   const catalogCount = site.productCatalog?.length ?? 0;
 
   async function saveOrigins() {
@@ -152,19 +152,7 @@ export default function SettingsPage() {
           </Button>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-sm font-semibold">LLM configuration</p>
-            <StatusChip variant={hasLlm ? "healthy" : "plan"}>
-              {hasLlm ? "Custom" : "Platform default"}
-            </StatusChip>
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {hasLlm
-              ? "This site uses a merchant-specific LLM key. Contact support to rotate credentials."
-              : "Hosted NINA uses the platform LLM. Custom keys can be attached via the API when needed."}
-          </p>
-        </div>
+        <LlmConfigForm />
       </div>
     </AppShell>
   );

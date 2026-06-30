@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { FileText, KeyRound, LogOut, Settings, User } from "lucide-react";
+import { Activity, FileText, KeyRound, LogOut, Settings, User } from "lucide-react";
 import { useDashboard } from "@/components/dashboard/dashboard-provider";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -47,6 +47,7 @@ export function AccountMenu() {
           </div>
           <nav className="p-1">
             {[
+              { href: "/dashboard/activity", icon: Activity, label: "Activity" },
               { href: "/dashboard/settings", icon: Settings, label: "Settings" },
               { href: "/dashboard/contract", icon: FileText, label: "Agent contract" },
               { href: "/dashboard/keys", icon: KeyRound, label: "API keys" },

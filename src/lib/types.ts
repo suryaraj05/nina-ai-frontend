@@ -93,6 +93,7 @@ export type WhoamiData = {
 export type UsageData = {
   calls?: number;
   lastCallAt?: number;
+  period?: string;
   plan?: string;
 };
 
