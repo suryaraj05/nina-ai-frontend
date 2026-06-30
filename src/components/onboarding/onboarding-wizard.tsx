@@ -318,10 +318,9 @@ export function OnboardingWizard() {
 
     try {
 
-      const res = await ninaFetch<unknown>(`/v1/auth/sites/${state.siteId}/generate-from-url`, {
+      const res = await ninaFetch<unknown>("/v1/wizard/generate-from-url", {
         method: "POST",
-        auth: "dashboard",
-        body: { apiBaseUrl: apiUrl },
+        body: { siteId: state.siteId, apiBaseUrl: apiUrl },
       });
 
       if (res.ok) {
@@ -404,9 +403,8 @@ export function OnboardingWizard() {
 
     try {
 
-      const res = await ninaFetch<unknown>(`/v1/auth/sites/${state.siteId}/contract`, {
+      const res = await ninaFetch<unknown>(`/v1/wizard/sites/${state.siteId}/contract`, {
         method: "PUT",
-        auth: "dashboard",
         body: { contract },
       });
 
