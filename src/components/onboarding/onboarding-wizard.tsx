@@ -48,6 +48,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { getErrorMessage, ninaFetch } from "@/lib/api-client";
 import {
+  getDashboardToken,
   getOnboardingState,
   setCachedPublishableKey,
   setDashboardToken,
@@ -158,6 +159,11 @@ export function OnboardingWizard() {
       setApiBaseUrl(saved.site.baseUrl);
 
       setStoreName(saved.site.name);
+
+      // Restore merchant auth after refresh (sessionStorage key is separate from onboarding blob).
+      if (saved.org.dashboardToken && !getDashboardToken()) {
+        setDashboardToken(saved.org.dashboardToken);
+      }
 
     }
 
@@ -287,7 +293,22 @@ export function OnboardingWizard() {
 
   async function handleGenerate() {
 
-    if (!state) return;
+    if (!state) {
+      setStatus({ type: "err", msg: "Session expired — complete step 1 again or log in from the dashboard." });
+      return;
+    }
+
+    if (!getDashboardToken()) {
+      if (state.org.dashboardToken) {
+        setDashboardToken(state.org.dashboardToken);
+      } else {
+        setStatus({
+          type: "err",
+          msg: "Dashboard login expired. Open the dashboard, sign in with your key, then return here.",
+        });
+        return;
+      }
+    }
 
     const apiUrl = apiBaseUrl.trim() || state.site.baseUrl;
 
@@ -305,7 +326,13 @@ export function OnboardingWizard() {
 
       if (res.ok) {
 
-        setStatus({ type: "ok", msg: "AI configured successfully!" });
+        const source = (res.data as { source?: string })?.source;
+        const via =
+          source === "static"
+            ? "Scanned your storefront routes (no API needed)."
+            : "Built from your store API.";
+
+        setStatus({ type: "ok", msg: `Contract generated! ${via} Continuing to install…` });
 
         setTimeout(() => goStep3(state), 800);
 
@@ -315,19 +342,21 @@ export function OnboardingWizard() {
 
           type: "err",
 
-          msg: `${getErrorMessage(res)} — you can still install NINA and upload a contract later.`,
+          msg: `${getErrorMessage(res)} — paste agent.json below or skip for now.`,
 
         });
 
-        setTimeout(() => goStep3(state), 2000);
-
       }
 
-    } catch {
+    } catch (err) {
 
-      setStatus({ type: "err", msg: "Network error — you can still install and configure later." });
-
-      setTimeout(() => goStep3(state), 1500);
+      setStatus({
+        type: "err",
+        msg:
+          err instanceof Error
+            ? err.message
+            : "Could not reach the API — check your connection and try again.",
+      });
 
     } finally {
 
@@ -715,7 +744,7 @@ export function OnboardingWizard() {
 
               <p className="mt-2 text-xs italic text-muted-foreground">
 
-                Scans your store API and builds agent.json automatically.
+                Scans your store API, or discovers routes automatically for static sites.
 
               </p>
 

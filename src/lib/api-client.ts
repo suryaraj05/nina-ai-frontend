@@ -50,8 +50,14 @@ export async function ninaFetch<T>(
     throw new NinaApiError(`Request failed (${res.status})`);
   }
 
-  if (!res.ok && json.ok !== false) {
-    throw new NinaApiError(json.detail ?? `HTTP ${res.status}`, "HTTP_ERROR");
+  if (!res.ok) {
+    if (json.ok === false) return json;
+    const message =
+      json.error?.message ??
+      json.detail ??
+      json.errors?.[0] ??
+      `HTTP ${res.status}`;
+    throw new NinaApiError(message, json.error?.code ?? "HTTP_ERROR");
   }
 
   return json;
