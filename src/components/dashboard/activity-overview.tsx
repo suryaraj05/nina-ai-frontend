@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Activity, Clock, MessageSquare, TrendingUp } from "lucide-react";
 import { useDashboard } from "@/components/dashboard/dashboard-provider";
+import { ConversationLogList } from "@/components/dashboard/conversation-log-list";
 import { StatusChip } from "@/components/ui/status-chip";
 
 function formatCalls(n: number) {
@@ -104,6 +105,8 @@ export function ActivityPageContent() {
 
       <ActivityOverview showLink={false} />
 
+      <ConversationLogList />
+
       <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
         <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
           Health checklist
@@ -135,11 +138,6 @@ export function ActivityPageContent() {
           </li>
         </ul>
       </div>
-
-      <p className="text-xs text-muted-foreground">
-        Per-conversation transcripts and action logs are coming in a future release. Today we track
-        monthly call volume and last activity time.
-      </p>
     </div>
   );
 }

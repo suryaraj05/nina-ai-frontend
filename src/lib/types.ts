@@ -97,6 +97,19 @@ export type UsageData = {
   plan?: string;
 };
 
+export type ConversationLogEntry = {
+  id: string;
+  siteId?: string;
+  sessionId?: string;
+  turnId?: string;
+  userMessage: string;
+  reply: string;
+  actionCalled?: string | null;
+  productCount?: number;
+  grounded?: boolean;
+  createdAt: number;
+};
+
 export type SetupStatus = {
   hasContract: boolean;
   hasKeys: boolean;
