@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nina-web
 
-## Getting Started
+Next.js frontend for NINA — onboarding, merchant dashboard, and marketing. Deploys separately from [Nina-AI](../Nina-AI) (FastAPI console + widget).
 
-First, run the development server:
+## Stack
+
+- Next.js 15 + TypeScript
+- Tailwind CSS v4 + shadcn/ui
+- BFF proxy at `/api/nina/*` → FastAPI console
+
+## Widget
+
+The embed widget stays in **Nina-AI** (`src/nina/sdk/nina-bootstrap.js`) — vanilla JS, not part of this repo.
+
+## Setup
 
 ```bash
+cp .env.example .env.local
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000/onboarding
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description |
+|----------|-------------|
+| `NINA_API_URL` | FastAPI console (default `http://127.0.0.1:8787`) |
+| `NINA_CONSOLE_ADMIN_SECRET` | Server-only; proxies wizard/admin calls |
+| `NEXT_PUBLIC_NINA_API_URL` | Public console URL for embed snippet |
 
-## Learn More
+Run the API from Nina-AI:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd ../Nina-AI
+$env:PYTHONPATH="src"; python -m nina.dev_launcher
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design system
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `design-system/MASTER.md` and `design-system/pages/onboarding.md`.
 
-## Deploy on Vercel
+## Repo layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/app/
+  page.tsx              # Marketing home (minimal)
+  onboarding/           # 3-step wizard
+  dashboard/            # Merchant dashboard (WIP)
+  api/nina/[...path]/   # BFF → console
+src/components/
+  onboarding/           # Step progress, journey rail, wizard
+  layout/               # Site nav
+src/lib/
+  api-client.ts         # Typed envelope client
+  types.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+- **nina-web** → Vercel (or similar)
+- **Nina-AI** → Render / your host for `/v1/query` + `/sdk`
+
+Set `NINA_API_URL` to your production console URL.
