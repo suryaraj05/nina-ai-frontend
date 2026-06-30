@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, Bell, User } from "lucide-react";
+import { ArrowLeft, Bell } from "lucide-react";
+import { AccountMenu } from "@/components/dashboard/account-menu";
 import { NinaLogo } from "@/components/brand/nina-logo";
 import { OrgPill } from "@/components/brand/org-pill";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -10,6 +11,7 @@ type Props = {
   orgPlaceholder?: string;
   backHref?: string;
   showNotifications?: boolean;
+  showAccount?: boolean;
   className?: string;
 };
 
@@ -18,6 +20,7 @@ export function AppHeader({
   orgPlaceholder = "Your store",
   backHref,
   showNotifications = false,
+  showAccount = false,
   className,
 }: Props) {
   const pillLabel = orgName?.trim() || orgPlaceholder;
@@ -57,14 +60,9 @@ export function AppHeader({
               <Bell className="h-5 w-5 text-muted-foreground" />
             </Button>
           ) : null}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full border border-border bg-card"
-            aria-label="Account"
-          >
-            <User className="h-4 w-4 text-muted-foreground" />
-          </Button>
+          {showAccount ? (
+            <AccountMenu />
+          ) : null}
         </div>
       </div>
     </header>

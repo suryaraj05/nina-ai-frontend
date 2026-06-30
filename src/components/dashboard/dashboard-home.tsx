@@ -9,7 +9,6 @@ import {
   FileText,
   KeyRound,
   Loader2,
-  Zap,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { DashboardLogin } from "@/components/dashboard/dashboard-login";
@@ -61,7 +60,7 @@ export function DashboardHome() {
 
   if (!setup.isLive) {
     return (
-      <AppShell orgName={orgName} showNotifications showBottomHelp>
+      <AppShell orgName={orgName} showNotifications showAccount showBottomHelp>
         <div className="space-y-5">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
@@ -153,7 +152,7 @@ export function DashboardHome() {
                   desc: setup.hasContract
                     ? `${setup.actionCount} actions configured`
                     : "Upload agent.json",
-                  href: "/onboarding",
+                  href: "/dashboard/contract",
                   status: setup.hasContract ? ("healthy" as const) : ("setup" as const),
                 },
                 {
@@ -202,7 +201,7 @@ export function DashboardHome() {
   }
 
   return (
-    <AppShell orgName={orgName} showNotifications showBottomHelp>
+    <AppShell orgName={orgName} showNotifications showAccount showBottomHelp>
       <div className="space-y-4">
         <StatusChip variant="plan">{site.plan ?? "free"}</StatusChip>
 
@@ -218,7 +217,9 @@ export function DashboardHome() {
         <div className="rounded-2xl border border-border bg-card p-4 shadow-soft">
           <div className="flex items-start justify-between">
             <p className="text-sm font-medium text-muted-foreground">Contract</p>
-            <Zap className="h-4 w-4 text-muted-foreground" />
+            <Link href="/dashboard/contract" className="text-sm font-semibold text-primary">
+              Manage
+            </Link>
           </div>
           <p className="mt-2 text-3xl font-bold tabular-nums">{setup.actionCount}</p>
           <p className="text-sm text-muted-foreground">Actions available</p>

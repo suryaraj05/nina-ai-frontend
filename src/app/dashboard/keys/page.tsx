@@ -90,7 +90,7 @@ export default function ApiKeysPage() {
   }
 
   return (
-    <AppShell backHref="/dashboard" showBottomHelp>
+    <AppShell backHref="/dashboard" showAccount showBottomHelp>
       <div className="space-y-5">
         <div>
           <h1 className="font-serif text-2xl font-bold">API keys</h1>

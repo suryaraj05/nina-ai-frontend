@@ -9,6 +9,7 @@ type Props = {
   backHref?: string;
   showBottomHelp?: boolean;
   showNotifications?: boolean;
+  showAccount?: boolean;
   showBottomNav?: boolean;
   className?: string;
 };
@@ -20,6 +21,7 @@ export function AppShell({
   backHref,
   showBottomHelp = true,
   showNotifications,
+  showAccount = false,
   showBottomNav = true,
   className,
 }: Props) {
@@ -30,6 +32,7 @@ export function AppShell({
         orgPlaceholder={orgPlaceholder}
         backHref={backHref}
         showNotifications={showNotifications}
+        showAccount={showAccount}
       />
       <main className={cn("mx-auto max-w-lg px-4 pb-28 pt-4", className)}>{children}</main>
       {showBottomNav ? <BottomNav showHelp={showBottomHelp} /> : null}

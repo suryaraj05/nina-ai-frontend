@@ -23,6 +23,14 @@ export type AgentContract = {
   [key: string]: unknown;
 };
 
+export type ProductCatalogRow = {
+  id?: string;
+  name?: string;
+  price?: number | string;
+  url?: string;
+  [key: string]: unknown;
+};
+
 export type Site = {
   id: string;
   name: string;
@@ -30,6 +38,7 @@ export type Site = {
   orgId?: string;
   plan?: string;
   agentContract?: AgentContract | null;
+  productCatalog?: ProductCatalogRow[];
   allowedOrigins?: string[];
   llmConfig?: unknown;
 };
